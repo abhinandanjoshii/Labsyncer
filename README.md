@@ -1,0 +1,190 @@
+# Labsyncer
+
+Labsyncer was a tool I created for actually file sharing that allows users to share files directly between devices using a simple invite code system.
+
+## I created this as during our lab exams , internet connections were shut down and we couldn't share code between each other PC. So created this tool to share code over the same network.
+## Please use it responsibly. Please add features if you can.
+
+## Features
+
+- Drag and drop file upload
+- File sharing via invite codes (port numbers)
+- File downloading using invite codes
+- Modern, responsive UI
+- Direct peer-to-peer file transfer
+
+## Prerequisites
+
+- Java 11+ (for the backend)
+- Node.js 18+ and npm (for the frontend)
+- Maven (for building the Java project)
+
+## Getting Started
+
+### Quick Start
+
+#### Linux/macOS:
+```bash
+./start.sh
+```
+
+#### Windows:
+```bash
+start.bat
+```
+
+These scripts will build the Java backend, start the server, and launch the frontend development server.
+
+### Manual Setup
+
+#### Backend Setup
+
+1. Build the Java project:
+   ```bash
+   mvn clean package
+   ```
+
+2. Run the backend server:
+   ```bash
+   java -jar target/labsyncer-1.0-SNAPSHOT.jar
+   ```
+
+   The backend server will start on port 8080.
+
+#### Frontend Setup
+
+1. Install dependencies:
+   ```bash
+   cd ui
+   npm install
+   ```
+
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+   The frontend will be available at [http://localhost:3000](http://localhost:3000).
+
+## How It Works
+
+1. **File Upload**:
+   - User uploads a file through the UI
+   - The file is sent to the Java backend
+   - The backend assigns a unique port number (invite code)
+   - The backend starts a file server on that port
+
+2. **File Sharing**:
+   - The user shares the invite code with another user
+   - The other user enters the invite code in their UI
+
+3. **File Download**:
+   - The UI connects to the specified port
+   - The file is transferred directly from the host to the recipient
+
+## Architecture
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│             │      │             │      │             │
+│  Next.js UI │◄────►│ Java Server │◄────►│ Peer Device │
+│             │      │             │      │             │
+└─────────────┘      └─────────────┘      └─────────────┘
+```
+
+## Low Level Design (LLD)
+
+```mermaid
+classDiagram
+    %% Frontend Components
+    class NextJSApp {
+        +handleFileUpload()
+        +handleFileDownload()
+        +connectToPeer()
+    }
+    
+    class FileUploadComponent {
+        +handleDragDrop()
+        +validateFile()
+        +uploadFile()
+    }
+    
+    class FileDownloadComponent {
+        +enterInviteCode()
+        +downloadFile()
+        +showProgress()
+    }
+
+    %% Backend Components
+    class App {
+        +main()
+        +startServer()
+    }
+    
+    class FileController {
+        +uploadFile()
+        +generateInviteCode()
+        +validateInviteCode()
+    }
+    
+    class FileService {
+        +storeFile()
+        +createFileServer()
+        +handleFileTransfer()
+    }
+    
+    class FileUtils {
+        +validateFile()
+        +generatePort()
+        +cleanupResources()
+    }
+
+    %% Relationships
+    NextJSApp --> FileUploadComponent
+    NextJSApp --> FileDownloadComponent
+    FileUploadComponent --> FileController
+    FileDownloadComponent --> FileController
+    FileController --> FileService
+    FileService --> FileUtils
+
+    %% Data Flow
+    class DataFlow {
+        FileUpload
+        FileDownload
+        InviteCode
+        PortNumber
+    }
+
+    %% Component Notes
+    note for NextJSApp "Handles UI state and user interactions"
+    note for FileController "REST API endpoints for file operations"
+    note for FileService "Core business logic for file handling"
+    note for FileUtils "Utility functions for file operations"
+```
+
+### Component Details
+
+1. **Frontend Components**
+   - `NextJSApp`: Main application component managing state and routing
+   - `FileUploadComponent`: Handles drag-and-drop file uploads
+   - `FileDownloadComponent`: Manages file downloads using invite codes
+
+2. **Backend Components**
+   - `App`: Main application entry point and server initialization
+   - `FileController`: REST API endpoints for file operations
+   - `FileService`: Core business logic for file handling
+   - `FileUtils`: Utility functions for file validation and port management
+
+3. **Data Flow**
+   - File uploads are handled through drag-and-drop
+   - Invite codes (port numbers) are generated for sharing
+   - Direct peer-to-peer file transfer using WebSocket connections
+
+## Important
+
+- I created this app specifically for my College Network so I ignored all security configrations such as encryption and decryption.
+- For production use, consider adding:
+  - File encryption
+  - User authentication
+  - HTTPS support
+  - Port validation and security
