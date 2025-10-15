@@ -1,38 +1,41 @@
+ui/node_modules/
+ui/.next/
+ui/.env
+ui/.env.local
+ui/.env.*.local
+ui/npm-debug.log*
+ui/yarn-debug.log*
+ui/yarn-error.log*
+ui/package-lock.json
+ui/pnpm-lock.yaml
+ui/.turbo/
+ui/dist/
+ui/build/
 target/
+build/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+*.class
+*.log
+.env
+.idea/
 *.iws
 *.iml
 *.ipr
-
-### Eclipse ###
+.vscode/
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 
-### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
 .DS_Store
+Thumbs.db
